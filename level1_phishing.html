@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Level 1 - Spot the Phishing Email</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      padding: 30px;
+      text-align: center;
+    }
+    .email {
+      border: 1px solid #444;
+      background: #1e1e1e;
+      padding: 20px;
+      margin: 20px auto;
+      width: 85%;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.3s;
+    }
+    .email:hover {
+      background-color: #2c2c2c;
+    }
+    #countdown {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      background: rgba(255, 0, 0, 0.85);
+      color: white;
+      padding: 8px 14px;
+      font-family: monospace;
+      font-size: 1.2em;
+      border-radius: 5px;
+      z-index: 9999;
+    }
+    .from { color: #66ff66; font-weight: bold; }
+    .subject { font-style: italic; color: #00bfff; }
+  </style>
+</head>
+<body>
+
+<div id="countdown">⏱ Time Left: <span id="timeLeft">60</span>s</div>
+
+<h1>📩 Level 1: Spot the Phishing Email</h1>
+<p>Click the **legitimate** email below. Avoid traps!</p>
+
+<div class="email" onclick="failLevel()">
+  <span class="from">support@bank-secure.com</span><br>
+  <span class="subject">URGENT: Account Suspended</span><br>
+  Please verify your account immediately to prevent suspension.
+</div>
+
+<div class="email" onclick="failLevel()">
+  <span class="from">admin@cloud-check.com</span><br>
+  <span class="subject">Cloud Quota Exceeded</span><br>
+  Click here to increase your storage.
+</div>
+
+<div class="email" onclick="failLevel()">
+  <span class="from">security@apple-care.com</span><br>
+  <span class="subject">Unauthorized Login Detected</span><br>
+  We detected a login from Russia. Review your account.
+</div>
+
+<div class="email" onclick="passLevel()">
+  <span class="from">hr@company.com</span><br>
+  <span class="subject">Reminder: Cybersecurity Training</span><br>
+  Dear team, don't forget your mandatory training this Friday.
+</div>
+
+<div id="result"></div>
+
+<script>
+function failLevel() {
+  document.getElementById("result").innerHTML = "<h2 style='color:red;'>❌ You clicked a phishing email! Game Over.</h2>";
+  setTimeout(() => window.location.href = "ransom.html", 2500);
+}
+
+function passLevel() {
+  document.getElementById("result").innerHTML = "<h2 style='color:lime;'>✅ Nice job! Proceeding to Level 2...</h2>";
+  setTimeout(() => window.location.href = "password.html", 2500);
+}
+
+const startTime = parseInt(localStorage.getItem("gameStart"), 10) || Date.now();
+function updateTimer() {
+  const elapsed = (Date.now() - startTime) / 1000;
+  const left = Math.max(0, Math.ceil(60 - elapsed));
+  const span = document.getElementById("timeLeft");
+  if (span) span.textContent = left;
+  if (left > 0) requestAnimationFrame(updateTimer);
+  else window.location.href = "time_up.html";
+}
+updateTimer();
+</script>
+
+</body>
+</html>
